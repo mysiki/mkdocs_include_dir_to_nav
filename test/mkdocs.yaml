@@ -8,22 +8,24 @@ copyright: "MIT"
 plugins:
   - search:
   - include_dir_to_nav:
-      flat: False
+      # flat: false
+      # file_name_as_title: false
+      # recurse: true
+      # file_pattern: '.*\.md$'
 docs_dir: './docs'
 
 nav:
   - Home: README.md
-  - folder01/subFolder02
-  - folder01
-  # - directSubDoc:
-  #     - folder01
-  # - Doc from folders:
-  #   - fold01: folder01
-  #   - sub man fold01: folder01/subFolder01
-  # - README.md
-  # - directDoc: folder01
-  # - All:
-  #     - folder01
-  #     - fold01: folder01/
-  #     - fold01: /folder01
+  - dirDirectRef
+  - SubDirDirectRef/SubDirDirectRefSub
+  - emptyDir
+  - dirNamed: dirNamed
+  - SubDirNamed: SubDirNamed/SubDirNamedSub
+  - dirDirectRefUnderMenu:
+    - dirDirectRefUnderMenu
+    - dirNamedUnderMenu: dirNamedUnderMenu
 
+# nav:
+#   - Home: README.md
+#   - dirDirectRef
+#   - dirNamed: dirNamed
