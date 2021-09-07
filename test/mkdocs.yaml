@@ -1,0 +1,29 @@
+site_name: "Test include_dir_to_nav"
+repo_url: "https://github.com/mysiki/mkdocs_include_dir_to_nav"
+site_author: mysiki
+site_description: >-
+  Test page for validate plugin
+copyright: "MIT"
+
+plugins:
+  - search:
+  - include_dir_to_nav:
+      flat: False
+docs_dir: './docs'
+
+nav:
+  - Home: README.md
+  - folder01/subFolder02
+  - folder01
+  # - directSubDoc:
+  #     - folder01
+  # - Doc from folders:
+  #   - fold01: folder01
+  #   - sub man fold01: folder01/subFolder01
+  # - README.md
+  # - directDoc: folder01
+  # - All:
+  #     - folder01
+  #     - fold01: folder01/
+  #     - fold01: /folder01
+
