@@ -9,7 +9,7 @@ plugins:
   - search:
   - include_dir_to_nav:
       # flat: false
-      # file_name_as_title: false
+      file_name_as_title: true
       # recurse: true
       # file_pattern: '.*\.md$'
       sort_file: true
