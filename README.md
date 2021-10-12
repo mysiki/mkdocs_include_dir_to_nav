@@ -21,6 +21,7 @@ Features :
     - `sort_directory` : Sort directory (default=True)
     - `reverse_sort_file` : Sort file in reverse order (default=False)
     - `reverse_sort_directory` : Sort file in reverse order (default=False)
+
 If you need more features, look at [mkdocs-awesome-pages-plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin>) than seem to make many more think.
 
 ## Setup ##
