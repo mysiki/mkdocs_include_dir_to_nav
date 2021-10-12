@@ -1,0 +1,19 @@
+# CHANGELOG #
+
+## 1.1.0 ##
+
+- Add sort options
+- Fix potential bug
+
+## 1.0.0 ##
+
+- Init
+- Scan navigation for replace folder to all sub file
+- Recurcive scan into folder
+- Accept all classic mkdocs file type (direct reference, reference with title ...)
+- Convert sub folder to section
+- Options :
+    - flat : Disable sub folder as section
+    - file_name_as_title : Usine file name as title instead of let mkdocs detect H1 balise in file
+    - recurse : disabled nested search in folder
+    - file_pattern : Regex for select markdown file (default '.*\.md$')
