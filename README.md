@@ -13,11 +13,14 @@ Features :
 - Accept all classic mkdocs file type (direct reference, reference with title ...)
 - Convert sub folder to section
 - Options :
-    - `flat` : Disable sub folder as section
-    - `file_name_as_title` : Usine file name as title instead of let mkdocs detect H1 balise in file
-    - `recurse` : disabled nested search in folder
+    - `flat` : Disable sub folder as section (default=True)
+    - `file_name_as_title` : Usine file name as title instead of let mkdocs detect H1 balise in file (default=False)
+    - `recurse` : disabled nested search in folder (default=True)
     - `file_pattern` : Regex for select markdown file (default `'.*\.md$'`)
-
+    - `sort_file` : Sort file (default=True)
+    - `sort_directory` : Sort directory (default=True)
+    - `reverse_sort_file` : Sort file in reverse order (default=False)
+    - `reverse_sort_directory` : Sort file in reverse order (default=False)
 If you need more features, look at [mkdocs-awesome-pages-plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin>) than seem to make many more think.
 
 ## Setup ##
@@ -208,6 +211,70 @@ Result :
     - dirNamedSub:
         - dirNamedSub-page01: dirNamed/dirNamedSub/dirNamedSub-page01.md
         - dirNamedSub-page02: dirNamed/dirNamedSub/dirNamedSub-page02.md
+```
+
+## Sorte option ##
+
+> Options :
+>
+> - `sort_file` : Sort file (default=True)
+> - `sort_directory` : Sort directory (default=True)
+> - `reverse_sort_file` : Sort file in reverse order (default=False)
+> - `reverse_sort_directory` : Sort file in reverse order (default=False)
+
+```yaml
+plugins:
+  - search
+  - include_dir_to_nav:
+      sort_file: true
+      sort_directory: true
+ ```
+
+Result :
+
+```yaml
+- aafolder:
+  - fold_sort/aafolder/0page.md
+  - fold_sort/aafolder/Cpage.md
+  - fold_sort/aafolder/apage.md
+  - fold_sort/aafolder/bpage.md
+  - fold_sort/aafolder/page-with-header.md
+  - fold_sort/aafolder/page-with-no-header.md
+  - fold_sort/aafolder/zpage.md
+- ccfolder:
+  - fold_sort/ccfolder/apage.md
+  - fold_sort/ccfolder/zpage.md
+- zzfolder:
+  - fold_sort/zzfolder/apage.md
+  - fold_sort/zzfolder/zpage.md
+```
+
+```yaml
+plugins:
+  - search
+  - include_dir_to_nav:
+      sort_file: true
+      sort_directory: true
+      reverse_sort_directory: true
+ ```
+
+Result :
+
+```yaml
+- zzfolder:
+  - fold_sort/zzfolder/apage.md
+  - fold_sort/zzfolder/zpage.md
+- ccfolder:
+  - fold_sort/ccfolder/apage.md
+  - fold_sort/ccfolder/zpage.md
+- aafolder:
+  - fold_sort/aafolder/0page.md
+  - fold_sort/aafolder/Cpage.md
+  - fold_sort/aafolder/apage.md
+  - fold_sort/aafolder/bpage.md
+  - fold_sort/aafolder/page-with-header.md
+  - fold_sort/aafolder/page-with-no-header.md
+  - fold_sort/aafolder/zpage.md
 ```
 
 More 'complexe' example in test folder.
