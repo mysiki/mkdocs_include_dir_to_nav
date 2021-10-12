@@ -213,7 +213,7 @@ Result :
         - dirNamedSub-page02: dirNamed/dirNamedSub/dirNamedSub-page02.md
 ```
 
-## Sorte option ##
+## Sort option ##
 
 > Options :
 >
