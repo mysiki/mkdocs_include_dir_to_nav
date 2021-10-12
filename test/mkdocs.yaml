@@ -9,23 +9,24 @@ plugins:
   - search:
   - include_dir_to_nav:
       # flat: false
-      # file_name_as_title: false
+      file_name_as_title: true
       # recurse: true
       # file_pattern: '.*\.md$'
+      sort_file: true
+      sort_directory: true
+      reverse_sort_directory: true
 docs_dir: './docs'
-
-nav:
-  - Home: README.md
-  - dirDirectRef
-  - SubDirDirectRef/SubDirDirectRefSub
-  - emptyDir
-  - dirNamed: dirNamed
-  - SubDirNamed: SubDirNamed/SubDirNamedSub
-  - dirDirectRefUnderMenu:
-    - dirDirectRefUnderMenu
-    - dirNamedUnderMenu: dirNamedUnderMenu
 
 # nav:
 #   - Home: README.md
 #   - dirDirectRef
+#   - SubDirDirectRef/SubDirDirectRefSub
+#   - emptyDir
 #   - dirNamed: dirNamed
+#   - SubDirNamed: SubDirNamed/SubDirNamedSub
+#   - dirDirectRefUnderMenu:
+#     - dirDirectRefUnderMenu
+#     - dirNamedUnderMenu: dirNamedUnderMenu
+
+nav:
+  - fold_sort
