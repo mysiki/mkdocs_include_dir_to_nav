@@ -22,6 +22,7 @@ class IncludeDirToNav(BasePlugin):
         ("sort_directory", config_options.Type(bool, default=True)),
         ("reverse_sort_file", config_options.Type(bool, default=False)),
         ("reverse_sort_directory", config_options.Type(bool, default=False)),
+        ("include_empty_dir", config_options.Type(bool, default=False)),
     )
 
     def on_files(self, files, config):
@@ -37,7 +38,8 @@ class IncludeDirToNav(BasePlugin):
                 reverse_sort_directory=self.config['reverse_sort_directory'],
                 reverse_sort_file=self.config['reverse_sort_file'],
                 sort_file=self.config['sort_file'],
-                sort_directory=self.config['sort_directory']
+                sort_directory=self.config['sort_directory'],
+                include_empty_dir=self.config['include_empty_dir']
             )
             log.debug(f"IncludeDirToNav : ## Final NAV : \n{yaml.dump(config['nav'], indent=2)}##")
 
@@ -46,7 +48,7 @@ class IncludeDirToNav(BasePlugin):
 #### If Yes, get direct files and direct directory, and insert it to nav
 #### If direct directory was finding, recall parse with current index, in order to subCheck needsted folder
 #### Take care of direct notation ( - myFolder ) and page title notation ( - my folder : myFolder)
-def parse(ori_nav,config, pattern: str = '.*\.md$', flat: bool = False, previous=None, file_name_as_title: bool=False, recurse: bool=True, reverse_sort_file: bool=False, reverse_sort_directory: bool=False, sort_file: bool=True, sort_directory: bool=True):
+def parse(ori_nav,config, pattern: str = '.*\.md$', flat: bool = False, previous=None, file_name_as_title: bool=False, recurse: bool=True, reverse_sort_file: bool=False, reverse_sort_directory: bool=False, sort_file: bool=True, sort_directory: bool=True, include_empty_dir: bool=False):
     log.debug("IncludeDirToNav : ##START Parse state###")
     log.debug(f"IncludeDirToNav : ori_nav = {ori_nav} | previous = {previous} | type of ori_nav {type(ori_nav)}")
 
@@ -73,14 +75,15 @@ def parse(ori_nav,config, pattern: str = '.*\.md$', flat: bool = False, previous
                             reverse_sort_directory=reverse_sort_directory,
                             reverse_sort_file=reverse_sort_file,
                             sort_file=sort_file,
-                            sort_directory=sort_directory
+                            sort_directory=sort_directory,
+                            include_empty_dir=include_empty_dir
                         )
 
                     ## Else, item is simple dict, aka, value is string
                     else:
                         current_item = os.path.join(config["docs_dir"], item[k])
                         log.debug(f"    IncludeDirToNav : check current item : {current_item}")
-                        to_add, directory_was_insered = _generate_nav(current_item, pattern, config, flat, file_name_as_title, recurse, reverse_sort_file, reverse_sort_directory, sort_file, sort_directory)
+                        to_add, directory_was_insered = _generate_nav(current_item, pattern, config, flat, file_name_as_title, recurse, reverse_sort_file, reverse_sort_directory, sort_file, sort_directory, include_empty_dir)
                         if to_add:
                             item.update({k: to_add})
                             if directory_was_insered:
@@ -95,13 +98,14 @@ def parse(ori_nav,config, pattern: str = '.*\.md$', flat: bool = False, previous
                                     reverse_sort_directory=reverse_sort_directory,
                                     reverse_sort_file=reverse_sort_file,
                                     sort_file=sort_file,
-                                    sort_directory=sort_directory
+                                    sort_directory=sort_directory,
+                                    include_empty_dir=include_empty_dir
                                 )
             ## Else if item is no named, value like { - 'pagePath' }
             elif isinstance(item, str):
                 log.debug(f"  IncludeDirToNav : Item in loop is string. Item = {item}")
                 current_item = os.path.join(config["docs_dir"], item)
-                to_add, directory_was_insered = _generate_nav(current_item, pattern, config, flat, file_name_as_title, recurse, reverse_sort_file, reverse_sort_directory, sort_file, sort_directory)
+                to_add, directory_was_insered = _generate_nav(current_item, pattern, config, flat, file_name_as_title, recurse, reverse_sort_file, reverse_sort_directory, sort_file, sort_directory, include_empty_dir)
                 if to_add:
                     # Replace current index by object in order to avoir infinite loop
                     ori_nav[index] = to_add.pop(-1)
@@ -121,10 +125,11 @@ def parse(ori_nav,config, pattern: str = '.*\.md$', flat: bool = False, previous
                             reverse_sort_directory=reverse_sort_directory,
                             reverse_sort_file=reverse_sort_file,
                             sort_file=sort_file,
-                            sort_directory=sort_directory
+                            sort_directory=sort_directory,
+                            include_empty_dir=include_empty_dir
                             )
 
-def _generate_nav(current_item: str, pattern: str, config, flat, file_name_as_title, recurse, reverse_sort_file, reverse_sort_directory, sort_file, sort_directory):
+def _generate_nav(current_item: str, pattern: str, config, flat, file_name_as_title, recurse, reverse_sort_file, reverse_sort_directory, sort_file, sort_directory, include_empty_dir: bool):
     ## Init var
     directory_was_insered = False
     to_add = []
@@ -150,13 +155,25 @@ def _generate_nav(current_item: str, pattern: str, config, flat, file_name_as_ti
             ## Else, continue loop to all level
             ## Work because first walk loop return all direct file and direct directory
             if not flat and d and recurse:
-                directory_was_insered = True
                 for sd in (sorted(d, reverse=reverse_sort_directory) if sort_directory else d):
+                    ## Check if subdir have file to add in order to not add empty dir
                     rpath = os.path.relpath(os.path.os.path.join(r, sd), config["docs_dir"] )
-                    to_add.append({sd : rpath })
-                    log.debug(f"IncludeDirToNav_generate_nav : adding dir (sd : {sd}, rpath: {rpath})")
+                    if include_empty_dir or _check_subitem(os.path.join(config["docs_dir"], rpath), pattern):
+                        directory_was_insered = True
+                        to_add.append({sd : rpath })
+                        log.debug(f"IncludeDirToNav_generate_nav : adding dir (sd : {sd}, rpath: {rpath})")
                 break
             elif not recurse:
                 break
 
     return to_add, directory_was_insered
+
+def _check_subitem(item_to_check: str, pattern: str):
+    log.debug(f"IncludeDirToNav_generate_nav : _check_subitem ({item_to_check})")
+    for filename in os.listdir(item_to_check):
+        f = os.path.join(item_to_check,filename)
+        if os.path.isfile(f) and re.match(pattern, filename):
+            log.debug(f"IncludeDirToNav_generate_nav : Dir have concerned subfile ({item_to_check})")
+            return True
+    log.debug(f"IncludeDirToNav_generate_nav : Dir not have subfile, do not add it ({item_to_check})")
+    return False

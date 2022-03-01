@@ -14,7 +14,8 @@ plugins:
       # file_pattern: '.*\.md$'
       sort_file: true
       sort_directory: true
-      reverse_sort_directory: true
+      # reverse_sort_directory: true
+      # include_empty_dir: true
 docs_dir: './docs'
 
 # nav:
@@ -29,4 +30,4 @@ docs_dir: './docs'
 #     - dirNamedUnderMenu: dirNamedUnderMenu
 
 nav:
-  - fold_sort
+  - subEmptyDir

@@ -21,6 +21,7 @@ Features :
     - `sort_directory` : Sort directory (default=True)
     - `reverse_sort_file` : Sort file in reverse order (default=False)
     - `reverse_sort_directory` : Sort file in reverse order (default=False)
+    - `include_empty_dir` : Include all subDir (event if no valid document is present) (default=False)
 
 If you need more features, look at [mkdocs-awesome-pages-plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin>) than seem to make many more think.
 
@@ -289,6 +290,16 @@ Feel free to add issue, arange code and/or make PR
 Find into test folder a basic mkdocs.yaml and sub folder in order to test plugin.
 
 Use `mkdocs build -v` in order to show debug message.
+
+### Publish ###
+
+Update changelog, readme and setup.py. Push code and PR.
+
+Build code : `python3 -m build`
+
+Publish in test pypi : `python3 -m twine upload --repository testpypi dist/*`
+
+Publish in pypi : `python3 -m twine upload dist/*`
 
 ## Personal note ##
 
